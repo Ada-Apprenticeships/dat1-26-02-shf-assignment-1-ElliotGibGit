@@ -1,4 +1,4 @@
-.open fittrackpro.db
+.open ../fittrackpro.db
 .mode column
 
 -- 3.1 

@@ -1,4 +1,5 @@
-.open fittrackpro.db
+.open "C:/Users/Ellio/REPO_CLONES/dat1-26-02-shf-assignment-1-ElliotGibGit/src/fittrackpro.db"
+
 .mode box
 
 DROP TABLE IF EXISTS locations;
@@ -22,7 +23,8 @@ CREATE TABLE locations (
 location_id INTEGER PRIMARY KEY,
 name VARCHAR(255) NOT NULL,
 address VARCHAR(255),
-phone_number VARCHAR(20),--Home Phone num used
+phone_number VARCHAR(20)
+    CHECK (phone_number GLOB '[0-9 ]*'),--Home Phone num used
 email VARCHAR(255) 
     CHECK (email GLOB '*@*.*'),
 opening_hours VARCHAR(11) 
@@ -35,14 +37,14 @@ last_name TEXT NOT NULL,
 email VARCHAR(255) NOT NULL
     CHECK (email GLOB '*@*.*'),
 phone_number VARCHAR(12)
-    CHECK (phone_number GLOB '[0-9][0-9][0-9][0-9][0-9] [0-9][0-9][0-9][0-9][0-9][0-9]'),
+    CHECK (phone_number GLOB '[0-9 ]*'),
 date_of_birth VARCHAR(10)
     CHECK (date_of_birth GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'),
 join_date VARCHAR(10)
     CHECK (join_date GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'),
 emergency_contact_name TEXT,
 emergency_contact_phone VARCHAR(12)
-    CHECK (emergency_contact_phone GLOB '[0-9][0-9][0-9][0-9][0-9] [0-9][0-9][0-9][0-9][0-9][0-9]')
+    CHECK (emergency_contact_phone GLOB '[0-9 ]*')
 );
 CREATE TABLE staff (
 staff_id INTEGER PRIMARY KEY, --PK
@@ -50,7 +52,7 @@ first_name TEXT NOT NULL,
 last_name TEXT NOT NULL, 
 email VARCHAR(255) NOT NULL,
 phone_number VARCHAR(12) 
-    CHECK (phone_number GLOB '[0-9][0-9][0-9][0-9][0-9] [0-9][0-9][0-9][0-9][0-9][0-9]'),
+    CHECK (phone_number GLOB '[0-9 ]*'),
 position TEXT
     CHECK (position IN ('Trainer', 'Manager','Receptionist','Maintenance')),
 hire_date VARCHAR(10)
