@@ -1,11 +1,24 @@
-.open ../fittrackpro.db
+.open "C:/Users/Ellio/REPO_CLONES/dat1-26-02-shf-assignment-1-ElliotGibGit/src/fittrackpro.db"
 .mode column
 
 -- 3.1 
-
+SELECT equipment_id, name, next_maintenance_date
+FROM equipment
+WHERE next_maintenance_date BETWEEN '2025-01-01' AND date('2025-01-31')
+ORDER BY next_maintenance_date;
 
 -- 3.2 
-
+SELECT type AS equipment_type, COUNT(*) AS count
+FROM equipment
+GROUP BY type; 
 
 -- 3.3 
+
+SELECT 
+    type AS equipment_type,
+    ROUND(AVG(julianday('now') - julianday(purchase_date)), 2) AS avg_age_days
+FROM equipment
+GROUP BY type;
+
+
 
