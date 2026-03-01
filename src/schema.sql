@@ -36,14 +36,15 @@ first_name TEXT NOT NULL,
 last_name TEXT NOT NULL,
 email VARCHAR(255) NOT NULL
     CHECK (email GLOB '*@*.*'),
-phone_number VARCHAR(12)
+phone_number VARCHAR(15)
     CHECK (phone_number GLOB '[0-9 ]*'),
 date_of_birth VARCHAR(10)
-    CHECK (date_of_birth GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'),
+    CHECK (date_of_birth GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]')
+    CHECK (date_of_birth < join_date),
 join_date VARCHAR(10)
     CHECK (join_date GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'),
 emergency_contact_name TEXT,
-emergency_contact_phone VARCHAR(12)
+emergency_contact_phone VARCHAR(15)
     CHECK (emergency_contact_phone GLOB '[0-9 ]*')
 );
 CREATE TABLE staff (
@@ -51,7 +52,7 @@ staff_id INTEGER PRIMARY KEY, --PK
 first_name TEXT NOT NULL,
 last_name TEXT NOT NULL, 
 email VARCHAR(255) NOT NULL,
-phone_number VARCHAR(12) 
+phone_number VARCHAR(15) 
     CHECK (phone_number GLOB '[0-9 ]*'),
 position TEXT
     CHECK (position IN ('Trainer', 'Manager','Receptionist','Maintenance')),
@@ -66,8 +67,11 @@ name VARCHAR(255),
 type TEXT
     CHECK (type IN ('Cardio', 'Strength')),
 purchase_date VARCHAR(10) CHECK (purchase_date GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'),
-last_maintenance_date VARCHAR(10) CHECK (last_maintenance_date GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'),
-next_maintenance_date VARCHAR(10) CHECK (next_maintenance_date GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'),
+last_maintenance_date VARCHAR(10) 
+    CHECK (last_maintenance_date GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'),
+next_maintenance_date VARCHAR(10) 
+    CHECK (next_maintenance_date GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]')
+    CHECK(next_maintenance_date > last_maintenance_date),
 location_id INTEGER, --FK,
 FOREIGN KEY (location_id) REFERENCES locations(location_id)
 );
@@ -99,7 +103,8 @@ type VARCHAR(50)
 start_date VARCHAR(10) 
     CHECK (start_date GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'),
 end_date VARCHAR(10)
-    CHECK (end_date GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'),
+    CHECK (end_date GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]')
+    CHECK (end_date > start_date),
 status TEXT
     CHECK (status IN ('Active','Inactive')),
 FOREIGN KEY (member_id) REFERENCES members(member_id) ON DELETE CASCADE
@@ -111,8 +116,8 @@ location_id INTEGER, --FK
 check_in_time VARCHAR(19)
     CHECK (check_in_time GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]'),
 check_out_time VARCHAR(19)
-    CHECK (check_out_time GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]'),
-FOREIGN KEY (member_id) REFERENCES members(member_id),
+    CHECK (check_out_time GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]')
+    CHECK(check_out_time > check_in_time),
 FOREIGN KEY (member_id) REFERENCES members(member_id) ON DELETE CASCADE,
 FOREIGN KEY (location_id) REFERENCES locations(location_id)
 );
@@ -128,12 +133,12 @@ FOREIGN KEY (member_id) REFERENCES members(member_id) ON DELETE CASCADE
 CREATE TABLE payments(
 payment_id INTEGER PRIMARY KEY, --PK
 member_id INTEGER, --FK
-amount DECIMAL,
+amount DECIMAL
+    CHECK (amount >= 0),
 payment_date 
     CHECK (payment_date GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]'),
 payment_method VARCHAR(50)
-    CHECK (payment_method IN ('Credit Card', 'Bank Transfer', 'PayPal','Cash'))
-    CHECK (amount >= 0),
+    CHECK (payment_method IN ('Credit Card', 'Bank Transfer', 'PayPal','Cash')),
 payment_type TEXT,
     CHECK(payment_type IN ('Monthly membership fee', 'Day pass')),
 FOREIGN KEY (member_id) REFERENCES members(member_id)
@@ -147,7 +152,8 @@ session_date VARCHAR(10)
 start_time VARCHAR(8)
     CHECK (start_time GLOB '[0-2][0-9]:[0-5][0-9]:[0-5][0-9]'),
 end_time VARCHAR(8)
-    CHECK (end_time GLOB '[0-2][0-9]:[0-5][0-9]:[0-5][0-9]'),
+    CHECK (end_time GLOB '[0-2][0-9]:[0-5][0-9]:[0-5][0-9]')
+    CHECK (end_time > start_time),
 
 notes VARCHAR(255),
 FOREIGN KEY (member_id) REFERENCES members(member_id) ON DELETE CASCADE,
