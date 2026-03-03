@@ -20,4 +20,4 @@ GROUP BY ms.type;
 SELECT m.member_id,m.first_name,m.last_name,m.email,ms.end_date
 FROM MEMBERS as m
 JOIN memberships ms ON m.member_id = ms.member_id
-WHERE ms.end_date BETWEEN '2025-01-01' AND '2025-12-31';
+WHERE ms.end_date BETWEEN date('2025-01-01') AND date('2025-12-31');
