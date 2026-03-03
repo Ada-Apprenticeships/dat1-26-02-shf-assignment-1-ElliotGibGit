@@ -4,7 +4,7 @@
 -- 3.1 
 SELECT equipment_id, name, next_maintenance_date
 FROM equipment
-WHERE next_maintenance_date BETWEEN '2025-01-01' AND date('2025-01-31')
+WHERE next_maintenance_date BETWEEN date('2025-01-01') AND date('2025-01-31')
 ORDER BY next_maintenance_date;
 
 -- 3.2 
