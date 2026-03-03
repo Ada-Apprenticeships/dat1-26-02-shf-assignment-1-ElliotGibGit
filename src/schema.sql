@@ -22,7 +22,7 @@ PRAGMA foreign_keys = ON;
 CREATE TABLE locations (
 location_id INTEGER PRIMARY KEY,
 name VARCHAR(255) NOT NULL,
-address VARCHAR(255),
+address VARCHAR(255) NOT NULL,
 phone_number VARCHAR(20)
     CHECK (phone_number GLOB '[0-9 ]*'),--Home Phone num used
 email VARCHAR(255) 

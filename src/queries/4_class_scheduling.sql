@@ -20,14 +20,14 @@ SELECT
 FROM classes c
 JOIN class_schedule cs ON c.class_id = cs.class_id
 LEFT JOIN class_attendance ca ON cs.schedule_id = ca.schedule_id
-WHERE date(cs.start_time) = '2025-02-01'
+WHERE date(cs.start_time) = date('2025-02-01')
 GROUP BY cs.schedule_id;
 
 -- 4.3 
 INSERT INTO class_attendance (schedule_id, member_id, attendance_status)
 SELECT cs.schedule_id, 11, 'Registered'
 FROM class_schedule cs
-WHERE cs.class_id = 1 AND date(cs.start_time) = '2025-02-01';
+WHERE cs.class_id = 1 AND date(cs.start_time) = date('2025-02-01');
 
 -- 4.4 
 UPDATE class_attendance

@@ -14,6 +14,6 @@ SELECT
 FROM staff as s
 JOIN personal_training_sessions as pts ON s.staff_id = pts.staff_id
 WHERE s.position = 'Trainer'
-AND pts.session_date BETWEEN '2025-01-20' AND DATE('2025-02-19')
+AND pts.session_date BETWEEN date('2025-01-20') AND date('2025-02-19')
 GROUP BY s.staff_id, s.first_name, s.last_name
 HAVING COUNT(pts.session_id) >= 1;
