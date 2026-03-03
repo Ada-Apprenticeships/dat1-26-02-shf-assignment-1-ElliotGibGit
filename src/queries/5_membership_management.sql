@@ -10,7 +10,7 @@ WHERE ms.status='Active';
 
 -- 5.2 
 SELECT ms.type AS membership_type,
-ROUND(AVG((strftime('%s', a.check_out_time) - strftime('%s', a.check_in_time)) / 60.0), 2) AS avg_visit_duration_minutes
+ROUND(AVG((strftime('%s', a.check_out_time) - strftime('%s', a.check_in_time)) / 60), 2) AS avg_visit_duration_minutes
 FROM attendance as a
 JOIN memberships ms ON a.member_id = ms.member_id
 GROUP BY ms.type;
